@@ -3,64 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun Facts - Hello Syn</title>
+    <title>Blog - Hello Syn</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            background: linear-gradient(120deg, #fccb90 0%, #d57eeb 100%);
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
             transition: background 0.3s ease;
         }
         .container {
-            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
             background-color: rgba(255, 255, 255, 0.9);
-            padding: 3rem;
+            padding: 2rem;
             border-radius: 20px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            width: 100%;
             transition: background-color 0.3s ease;
         }
-        h1 {
+        h1, h2 {
             color: #333;
-            margin-bottom: 1rem;
-            font-size: 2.5rem;
             transition: color 0.3s ease;
         }
-        p {
-            color: #666;
-            font-size: 1.2rem;
-        }
-        .fact-container {
-            margin-top: 2rem;
+        .post {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #ccc;
         }
         .nav-button {
             display: inline-block;
             padding: 10px 20px;
             margin: 10px;
-            background-color: #8fd3f4;
+            background-color: #fccb90;
             color: white;
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s;
         }
         .nav-button:hover {
-            background-color: #6cb8d9;
-        }
-        #newFactBtn {
-            background-color: #84fab0;
-            border: none;
-            cursor: pointer;
-        }
-        #newFactBtn:hover {
-            background-color: #6cd89b;
+            background-color: #f9b76f;
         }
         body.dark-mode {
             background: linear-gradient(120deg, #2c3e50 0%, #4ca1af 100%);
@@ -94,48 +77,48 @@
 </head>
 <body>
     <div class="container">
-        <h1>Fun Facts</h1>
-        <div class="fact-container">
-            <h2>Did You Know?</h2>
-            <p>Here's a random fun fact for you:</p>
-            <p id="fact">Loading...</p>
-            <button id="newFactBtn" class="nav-button">Get New Fact</button>
-        </div>
+        <h1>My Blog</h1>
+        <div id="posts"></div>
         <div>
             <a href="index.html" class="nav-button">Home</a>
-            <a href="quotes.html" class="nav-button">Quotes</a>
-            <a href="colorpalette.html" class="nav-button">Color Palette</a>
             <a href="portfolio.html" class="nav-button">Portfolio</a>
-            <a href="blog.html" class="nav-button">Blog</a>
+            <a href="quotes.html" class="nav-button">Quotes</a>
+            <a href="funfacts.html" class="nav-button">Fun Facts</a>
+            <a href="colorpalette.html" class="nav-button">Color Palette</a>
             <a href="typingtest.html" class="nav-button">Typing Test</a>
         </div>
     </div>
     <button class="dark-mode-toggle" id="darkModeToggle">Toggle Dark Mode</button>
     <script>
-        const apiUrl = 'https://uselessfacts.jsph.pl/random.json?language=en';
+        const blogPosts = [
+            {
+                title: "My First Blog Post",
+                date: "2023-04-15",
+                content: "This is the content of my first blog post. It's a short introduction to my blog."
+            },
+            {
+                title: "Learning Web Development",
+                date: "2023-04-20",
+                content: "In this post, I share my experience learning web development and creating my personal website."
+            },
+            // Add more blog posts as needed
+        ];
 
-        function getFact() {
-            console.log('getFact function called');
-            document.getElementById('fact').textContent = 'Fetching new fact...';
-            
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Fact data:', data);
-                    document.getElementById('fact').textContent = data.text;
-                })
-                .catch(error => {
-                    console.error('Error fetching fact:', error);
-                    document.getElementById('fact').textContent = 'Error fetching fact. Please try again.';
-                });
+        function displayBlogPosts() {
+            const postsContainer = document.getElementById('posts');
+            blogPosts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.innerHTML = `
+                    <h2>${post.title}</h2>
+                    <p><em>Published on ${post.date}</em></p>
+                    <p>${post.content}</p>
+                `;
+                postsContainer.appendChild(postElement);
+            });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const button = document.getElementById('newFactBtn');
-            button.addEventListener('click', getFact);
-            console.log('Event listener added');
-            getFact();
-        });
+        document.addEventListener('DOMContentLoaded', displayBlogPosts);
 
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
@@ -151,3 +134,4 @@
     </script>
 </body>
 </html>
+
