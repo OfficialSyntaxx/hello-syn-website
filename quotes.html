@@ -83,7 +83,6 @@
     </div>
 
     <script>
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
         const apiUrl = 'https://api.quotable.io/random';
 
         function getQuote() {
@@ -91,7 +90,7 @@
             document.getElementById('quote').textContent = 'Fetching new quote...';
             document.getElementById('author').textContent = '';
             
-            fetch(proxyUrl + apiUrl)
+            fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
                     console.log('Quote data:', data);
