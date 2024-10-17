@@ -81,17 +81,8 @@
         function getActivity() {
             document.getElementById('activity').textContent = 'Fetching new activity...';
             
-            // Using a CORS proxy
-            const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-            const apiUrl = 'https://www.boredapi.com/api/activity';
-            
-            fetch(proxyUrl + apiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
+            fetch('/.netlify/functions/getActivity')
+                .then(response => response.json())
                 .then(data => {
                     console.log('Activity data:', data); // For debugging
                     document.getElementById('activity').textContent = data.activity;
