@@ -34,6 +34,21 @@
             color: #666;
             font-size: 1.2rem;
         }
+        .search-container {
+            margin-top: 2rem;
+        }
+        .search-box {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .search-box:focus {
+            border-color: #84fab0;
+        }
         @keyframes fadeIn {
             to {
                 opacity: 1;
@@ -51,6 +66,9 @@
     <div class="container">
         <h1>Hello Syn</h1>
         <p>Welcome to this modern and animated website!</p>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search for..." id="searchBox">
+        </div>
     </div>
 
     <script>
@@ -59,6 +77,37 @@
             container.style.animation = 'none';
             container.offsetHeight; // Trigger reflow
             container.style.animation = null;
+
+            const searchBox = document.getElementById('searchBox');
+            const placeholders = ['cool stuff', 'awesome things', 'fun ideas', 'great content'];
+            let currentPlaceholder = 0;
+            let currentChar = 0;
+            let isDeleting = false;
+            let typingSpeed = 100;
+
+            function typeEffect() {
+                const current = placeholders[currentPlaceholder];
+                if (isDeleting) {
+                    searchBox.placeholder = current.substring(0, currentChar - 1);
+                    currentChar--;
+                } else {
+                    searchBox.placeholder = current.substring(0, currentChar + 1);
+                    currentChar++;
+                }
+
+                if (!isDeleting && currentChar === current.length) {
+                    isDeleting = true;
+                    typingSpeed = 50;
+                } else if (isDeleting && currentChar === 0) {
+                    isDeleting = false;
+                    currentPlaceholder = (currentPlaceholder + 1) % placeholders.length;
+                    typingSpeed = 100;
+                }
+
+                setTimeout(typeEffect, typingSpeed);
+            }
+
+            typeEffect();
         });
     </script>
 </body>
