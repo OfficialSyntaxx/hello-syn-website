@@ -84,12 +84,19 @@
 
     <script>
         function getQuote() {
+            console.log('getQuote function called'); // For debugging
             document.getElementById('quote').textContent = 'Fetching new quote...';
             document.getElementById('author').textContent = '';
             
             fetch('https://api.quotable.io/random')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('Quote data:', data); // For debugging
                     document.getElementById('quote').textContent = `"${data.content}"`;
                     document.getElementById('author').textContent = `- ${data.author}`;
                 })
@@ -100,7 +107,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('newQuoteBtn').addEventListener('click', getQuote);
+            const button = document.getElementById('newQuoteBtn');
+            button.addEventListener('click', getQuote);
+            console.log('Event listener added'); // For debugging
             getQuote();
         });
     </script>

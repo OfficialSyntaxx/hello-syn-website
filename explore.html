@@ -81,9 +81,19 @@
         function getActivity() {
             document.getElementById('activity').textContent = 'Fetching new activity...';
             
-            fetch('https://www.boredapi.com/api/activity')
-                .then(response => response.json())
+            // Using a CORS proxy
+            const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+            const apiUrl = 'https://www.boredapi.com/api/activity';
+            
+            fetch(proxyUrl + apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('Activity data:', data); // For debugging
                     document.getElementById('activity').textContent = data.activity;
                 })
                 .catch(error => {
@@ -93,7 +103,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('newActivityBtn').addEventListener('click', getActivity);
+            const button = document.getElementById('newActivityBtn');
+            button.addEventListener('click', getActivity);
+            console.log('Event listener added'); // For debugging
             getActivity();
         });
     </script>
