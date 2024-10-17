@@ -112,7 +112,6 @@
             <a href="colorpalette.html" class="nav-button">Color Palette</a>
             <a href="portfolio.html" class="nav-button">Portfolio</a>
             <a href="blog.html" class="nav-button">Blog</a>
-            <a href="typingtest.html" class="nav-button">Typing Test</a>
         </div>
     </div>
     <button class="dark-mode-toggle" id="darkModeToggle">Toggle Dark Mode</button>
@@ -130,18 +129,24 @@
 
         function getQuote() {
             console.log('getQuote function called');
-            displayQuote(getRandomQuote());
+            if (quotes.length > 0) {
+                displayQuote(getRandomQuote());
+            } else {
+                document.getElementById('quote').textContent = 'Error loading quotes.';
+                document.getElementById('author').textContent = '';
+            }
         }
 
         fetch('quotes.json')
             .then(response => response.json())
             .then(data => {
                 quotes = data;
-                getQuote(); // Display initial quote
+                getQuote();
             })
             .catch(error => {
                 console.error('Error loading quotes:', error);
                 document.getElementById('quote').textContent = 'Error loading quotes.';
+                document.getElementById('author').textContent = '';
             });
 
         document.addEventListener('DOMContentLoaded', () => {
