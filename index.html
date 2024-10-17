@@ -6,8 +6,8 @@
     <title>Hello Syn</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,17 +17,18 @@
         }
         .container {
             text-align: center;
-            background-color: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeIn 1s ease-out forwards;
+            animation: fadeIn 1s ease-out forwards, float 3s ease-in-out infinite;
         }
         h1 {
             color: #333;
             margin-bottom: 1rem;
+            font-size: 2.5rem;
         }
         p {
             color: #666;
@@ -39,7 +40,12 @@
                 transform: translateY(0);
             }
         }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
