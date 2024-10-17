@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore - Hello Syn</title>
+    <style>
+        /* ... (previous styles remain unchanged) ... */
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Explore More</h1>
+        <div class="activity-container">
+            <h2>Feeling Bored?</h2>
+            <p>Here's an activity suggestion:</p>
+            <p id="activity">Loading...</p>
+            <button id="newActivityBtn" class="nav-button">Get New Activity</button>
+        </div>
+        <div>
+            <a href="index.html" class="nav-button">Home</a>
+            <a href="quotes.html" class="nav-button">Quotes</a>
+        </div>
+    </div>
+
+    <script>
+        function getActivity() {
+            console.log('getActivity function called'); // Debug log
+            document.getElementById('activity').textContent = 'Fetching new activity...';
+            
+            fetch('https://www.boredapi.com/api/activity')
+                .then(response => {
+                    console.log('API response received'); // Debug log
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Activity data:', data); // Debug log
+                    document.getElementById('activity').textContent = data.activity;
+                })
+                .catch(error => {
+                    console.error('Error fetching activity:', error);
+                    document.getElementById('activity').textContent = 'Error fetching activity. Please try again.';
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            console.log('DOM fully loaded'); // Debug log
+            const button = document.getElementById('newActivityBtn');
+            button.addEventListener('click', getActivity);
+            console.log('Click event listener added to button'); // Debug log
+            
+            // Get initial activity on page load
+            getActivity();
+        });
+    </script>
+</body>
+</html>
