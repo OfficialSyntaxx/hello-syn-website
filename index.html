@@ -78,12 +78,62 @@
         }
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            max-width: 80%;
+            border-radius: 10px;
+        }
+        .modal input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .user-profile {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .profile-modal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .profile-content {
+            background-color: #fefefe;
+            margin: 10% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
             max-width: 500px;
             border-radius: 10px;
+        }
+        .profile-content img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
         }
         .close {
             color: #aaa;
@@ -124,14 +174,19 @@
         </div>
     </div>
 
+    <div id="userProfile" class="user-profile" style="display: none;" onclick="openModal('profileModal')">
+        <img src="https://via.placeholder.com/40" alt="Avatar" class="user-avatar">
+        <span id="userName"></span>
+    </div>
+
     <!-- Login Modal -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('loginModal')">&times;</span>
             <h2>Login</h2>
             <form id="loginForm">
-                <input type="email" placeholder="Email" required><br><br>
-                <input type="password" placeholder="Password" required><br><br>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
                 <button type="submit" class="auth-button">Login</button>
             </form>
         </div>
@@ -143,11 +198,28 @@
             <span class="close" onclick="closeModal('signupModal')">&times;</span>
             <h2>Sign Up</h2>
             <form id="signupForm">
-                <input type="text" placeholder="Username" required><br><br>
-                <input type="email" placeholder="Email" required><br><br>
-                <input type="password" placeholder="Password" required><br><br>
+                <input type="text" placeholder="Username" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
                 <button type="submit" class="auth-button">Sign Up</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="profile-modal">
+        <div class="profile-content">
+            <span class="close" onclick="closeModal('profileModal')">&times;</span>
+            <h2>User Profile</h2>
+            <img id="profileAvatar" src="https://via.placeholder.com/100" alt="Profile Avatar">
+            <form id="profileForm">
+                <input type="text" id="profileUsername" placeholder="Username" required>
+                <input type="email" id="profileEmail" placeholder="Email" required>
+                <input type="text" id="profileBio" placeholder="Bio">
+                <input type="url" id="profileAvatarUrl" placeholder="Avatar URL">
+                <button type="submit" class="auth-button">Update Profile</button>
+            </form>
+            <button class="auth-button" onclick="logout()">Logout</button>
         </div>
     </div>
 
@@ -206,6 +278,23 @@
 
         // Simple user management using localStorage
         const users = JSON.parse(localStorage.getItem('users')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+
+        function updateUserProfile() {
+            const userProfile = document.getElementById('userProfile');
+            const userName = document.getElementById('userName');
+            if (currentUser) {
+                userProfile.style.display = 'flex';
+                userName.textContent = currentUser.username;
+                document.getElementById('profileUsername').value = currentUser.username;
+                document.getElementById('profileEmail').value = currentUser.email;
+                document.getElementById('profileBio').value = currentUser.bio || '';
+                document.getElementById('profileAvatarUrl').value = currentUser.avatarUrl || '';
+                document.getElementById('profileAvatar').src = currentUser.avatarUrl || 'https://via.placeholder.com/100';
+            } else {
+                userProfile.style.display = 'none';
+            }
+        }
 
         document.getElementById("loginForm").onsubmit = function(e) {
             e.preventDefault();
@@ -214,6 +303,9 @@
 
             const user = users.find(u => u.email === email && u.password === password);
             if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                updateUserProfile();
                 alert('Login successful!');
                 closeModal('loginModal');
             } else {
@@ -232,11 +324,46 @@
                 return;
             }
 
-            users.push({ username, email, password });
+            const newUser = { username, email, password };
+            users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateUserProfile();
             alert('Signup successful!');
             closeModal('signupModal');
         }
+
+        document.getElementById("profileForm").onsubmit = function(e) {
+            e.preventDefault();
+            const username = document.getElementById('profileUsername').value;
+            const email = document.getElementById('profileEmail').value;
+            const bio = document.getElementById('profileBio').value;
+            const avatarUrl = document.getElementById('profileAvatarUrl').value;
+
+            currentUser.username = username;
+            currentUser.email = email;
+            currentUser.bio = bio;
+            currentUser.avatarUrl = avatarUrl;
+
+            const userIndex = users.findIndex(u => u.email === currentUser.email);
+            users[userIndex] = currentUser;
+
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateUserProfile();
+            alert('Profile updated successfully!');
+            closeModal('profileModal');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateUserProfile();
+            closeModal('profileModal');
+        }
+
+        updateUserProfile();
     </script>
 </body>
 </html>
