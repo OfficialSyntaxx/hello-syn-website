@@ -78,13 +78,17 @@
     </div>
 
     <script>
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        const apiUrl = 'https://www.boredapi.com/api/activity';
+
         function getActivity() {
+            console.log('getActivity function called');
             document.getElementById('activity').textContent = 'Fetching new activity...';
             
-            fetch('/.netlify/functions/getActivity')
+            fetch(proxyUrl + apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Activity data:', data); // For debugging
+                    console.log('Activity data:', data);
                     document.getElementById('activity').textContent = data.activity;
                 })
                 .catch(error => {
@@ -96,7 +100,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.getElementById('newActivityBtn');
             button.addEventListener('click', getActivity);
-            console.log('Event listener added'); // For debugging
+            console.log('Event listener added');
             getActivity();
         });
     </script>

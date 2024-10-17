@@ -83,15 +83,18 @@
     </div>
 
     <script>
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        const apiUrl = 'https://api.quotable.io/random';
+
         function getQuote() {
-            console.log('getQuote function called'); // For debugging
+            console.log('getQuote function called');
             document.getElementById('quote').textContent = 'Fetching new quote...';
             document.getElementById('author').textContent = '';
             
-            fetch('/.netlify/functions/getQuote')
+            fetch(proxyUrl + apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Quote data:', data); // For debugging
+                    console.log('Quote data:', data);
                     document.getElementById('quote').textContent = `"${data.content}"`;
                     document.getElementById('author').textContent = `- ${data.author}`;
                 })
@@ -104,7 +107,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.getElementById('newQuoteBtn');
             button.addEventListener('click', getQuote);
-            console.log('Event listener added'); // For debugging
+            console.log('Event listener added');
             getQuote();
         });
     </script>
