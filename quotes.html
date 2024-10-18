@@ -25,30 +25,27 @@
         </div>
     </div>
     <script>
-        const apiUrl = 'https://api.quotable.io/random';
+        const quotes = [
+            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+            { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
+            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+            { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+            { text: "In the end, it's not the years in your life that count. It's the life in your years.", author: "Abraham Lincoln" }
+        ];
 
-        function displayQuote(quote) {
-            document.getElementById('quote').textContent = quote.content;
-            document.getElementById('author').textContent = `- ${quote.author}`;
+        function getRandomQuote() {
+            return quotes[Math.floor(Math.random() * quotes.length)];
         }
 
-        function fetchQuote() {
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    displayQuote(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('quote').textContent = 'Failed to fetch quote. Please try again.';
-                    document.getElementById('author').textContent = '';
-                });
+        function displayQuote(quote) {
+            document.getElementById('quote').textContent = quote.text;
+            document.getElementById('author').textContent = `- ${quote.author}`;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.getElementById('newQuoteBtn');
-            button.addEventListener('click', fetchQuote);
-            fetchQuote();
+            button.addEventListener('click', () => displayQuote(getRandomQuote()));
+            displayQuote(getRandomQuote());
         });
     </script>
     <script src="futuristic.js"></script>
