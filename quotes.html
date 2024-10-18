@@ -25,13 +25,7 @@
         </div>
     </div>
     <script>
-        const quotes = [
-            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-            { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
-            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
-            { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
-            { text: "In the end, it's not the years in your life that count. It's the life in your years.", author: "Abraham Lincoln" }
-        ];
+        let quotes = [];
 
         function getRandomQuote() {
             return quotes[Math.floor(Math.random() * quotes.length)];
@@ -42,10 +36,20 @@
             document.getElementById('author').textContent = `- ${quote.author}`;
         }
 
+        function fetchQuotes() {
+            fetch('quotes.json')
+                .then(response => response.json())
+                .then(data => {
+                    quotes = data;
+                    displayQuote(getRandomQuote());
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.getElementById('newQuoteBtn');
             button.addEventListener('click', () => displayQuote(getRandomQuote()));
-            displayQuote(getRandomQuote());
+            fetchQuotes();
         });
     </script>
     <script src="futuristic.js"></script>
