@@ -74,8 +74,15 @@
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="futuristic.css">
 </head>
 <body>
+    <div class="theme-toggle">
+        <div class="theme-option cyber-theme" data-theme="cyber"></div>
+        <div class="theme-option neon-theme" data-theme="neon"></div>
+        <div class="theme-option matrix-theme" data-theme="matrix"></div>
+    </div>
     <div class="container">
         <h1>My Blog</h1>
         <div id="posts"></div>
@@ -88,6 +95,7 @@
         </div>
     </div>
     <button class="dark-mode-toggle" id="darkModeToggle">Toggle Dark Mode</button>
+    <script src="futuristic.js"></script>
     <script>
         const blogPosts = [
             {
@@ -133,4 +141,3 @@
     </script>
 </body>
 </html>
-
