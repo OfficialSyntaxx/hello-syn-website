@@ -3,81 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quotes - Hello Syn</title>
+    <title>Daily Quotes - Hello Syn</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            transition: background 0.3s ease;
-        }
-        .container {
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            width: 100%;
-            transition: background-color 0.3s ease;
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 1rem;
-            font-size: 2.5rem;
-            transition: color 0.3s ease;
-        }
-        .quote-container {
-            margin-top: 2rem;
-        }
-        #quote {
-            font-style: italic;
-            font-size: 1.2rem;
-            color: #555;
-        }
-        #author {
-            margin-top: 1rem;
-            font-weight: bold;
-            color: #777;
-        }
-        .nav-button {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 10px;
-            background-color: #fda085;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .nav-button:hover {
-            background-color: #f6d365;
-        }
-        #newQuoteBtn {
-            background-color: #4a4a4a;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        #newQuoteBtn:hover {
-            background-color: #666;
-        }
-        
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="futuristic.css">
 </head>
@@ -97,6 +24,7 @@
             <a href="blog.html" class="nav-button">Blog</a>
         </div>
     </div>
+    <script>
         let quotes = [];
 
         function getRandomQuote() {
@@ -104,40 +32,25 @@
         }
 
         function displayQuote(quote) {
-            document.getElementById('quote').textContent = `"${quote.text}"`;
-            document.getElementById('author').textContent = `- ${quote.author}`;
+            document.getElementById('quote').textContent = quote.text;
+            document.getElementById('author').textContent = `- ${quote.author || 'Unknown'}`;
         }
 
-        function getQuote() {
-            console.log('getQuote function called');
-            if (quotes.length > 0) {
-                displayQuote(getRandomQuote());
-            } else {
-                document.getElementById('quote').textContent = 'Error loading quotes.';
-                document.getElementById('author').textContent = '';
-            }
+        function fetchQuotes() {
+            fetch('https://type.fit/api/quotes')
+                .then(response => response.json())
+                .then(data => {
+                    quotes = data;
+                    displayQuote(getRandomQuote());
+                })
+                .catch(error => console.error('Error:', error));
         }
-
-        fetch('quotes.json')
-            .then(response => response.json())
-            .then(data => {
-                console.log('Quotes loaded successfully:', data);
-                quotes = data;
-                getQuote();
-            })
-            .catch(error => {
-                console.error('Error loading quotes:', error);
-                console.error('Error details:', error.message);
-                document.getElementById('quote').textContent = 'Error loading quotes.';
-                document.getElementById('author').textContent = '';
-            });
 
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.getElementById('newQuoteBtn');
-            button.addEventListener('click', getQuote);
-            console.log('Event listener added');
+            button.addEventListener('click', () => displayQuote(getRandomQuote()));
+            fetchQuotes();
         });
-
     </script>
     <script src="futuristic.js"></script>
 </body>
