@@ -19,37 +19,36 @@
         <div>
             <a href="index.html" class="nav-button">Home</a>
             <a href="funfacts.html" class="nav-button">Fun Facts</a>
-            <a href="colorpalette.html" class="nav-button">Surprise!</a>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="nav-button" target="_blank">Surprise!</a>
             <a href="portfolio.html" class="nav-button">Portfolio</a>
             <a href="blog.html" class="nav-button">Blog</a>
         </div>
     </div>
     <script>
-        let quotes = [];
-
-        function getRandomQuote() {
-            return quotes[Math.floor(Math.random() * quotes.length)];
-        }
+        const apiUrl = 'https://api.quotable.io/random';
 
         function displayQuote(quote) {
-            document.getElementById('quote').textContent = quote.text;
-            document.getElementById('author').textContent = `- ${quote.author || 'Unknown'}`;
+            document.getElementById('quote').textContent = quote.content;
+            document.getElementById('author').textContent = `- ${quote.author}`;
         }
 
-        function fetchQuotes() {
-            fetch('https://type.fit/api/quotes')
+        function fetchQuote() {
+            fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    quotes = data;
-                    displayQuote(getRandomQuote());
+                    displayQuote(data);
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('quote').textContent = 'Failed to fetch quote. Please try again.';
+                    document.getElementById('author').textContent = '';
+                });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.getElementById('newQuoteBtn');
-            button.addEventListener('click', () => displayQuote(getRandomQuote()));
-            fetchQuotes();
+            button.addEventListener('click', fetchQuote);
+            fetchQuote();
         });
     </script>
     <script src="futuristic.js"></script>
