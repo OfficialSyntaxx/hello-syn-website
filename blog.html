@@ -45,44 +45,14 @@
         .nav-button:hover {
             background-color: #f9b76f;
         }
-        body.dark-mode {
-            background: linear-gradient(120deg, #2c3e50 0%, #4ca1af 100%);
-            color: #f0f0f0;
-        }
-        body.dark-mode .container {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-        body.dark-mode h1, body.dark-mode h2 {
-            color: #f0f0f0;
-        }
-        body.dark-mode .nav-button {
-            background-color: #4ca1af;
-        }
-        body.dark-mode .nav-button:hover {
-            background-color: #45a049;
-        }
-        .dark-mode-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+        
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="futuristic.css">
 </head>
 <body>
-    <div class="theme-toggle">
-        <div class="theme-option cyber-theme" data-theme="cyber"></div>
-        <div class="theme-option neon-theme" data-theme="neon"></div>
-        <div class="theme-option matrix-theme" data-theme="matrix"></div>
-    </div>
+    
     <div class="container">
         <h1>My Blog</h1>
         <div id="posts"></div>
@@ -94,8 +64,6 @@
             <a href="colorpalette.html" class="nav-button">Surprise!</a>
         </div>
     </div>
-    <button class="dark-mode-toggle" id="darkModeToggle">Toggle Dark Mode</button>
-    <button class="easter-egg-btn" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')">Do not click</button>
     <script src="futuristic.js"></script>
     <script>
         const blogPosts = [
@@ -127,18 +95,5 @@
         }
 
         document.addEventListener('DOMContentLoaded', displayBlogPosts);
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-        }
-
-        document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-
-        // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.classList.add('dark-mode');
-        }
-    </script>
 </body>
 </html>
