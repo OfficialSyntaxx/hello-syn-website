@@ -64,3 +64,23 @@ body {
 .easter-egg:hover {
     opacity: 0.3;
 }
+
+.easter-egg-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ff00ff;
+    color: #000033;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.easter-egg-btn:hover {
+    background-color: #00ffff;
+    transform: scale(1.1);
+}
