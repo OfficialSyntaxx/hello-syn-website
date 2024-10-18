@@ -149,11 +149,13 @@
         fetch('quotes.json')
             .then(response => response.json())
             .then(data => {
+                console.log('Quotes loaded successfully:', data);
                 quotes = data;
                 getQuote();
             })
             .catch(error => {
                 console.error('Error loading quotes:', error);
+                console.error('Error details:', error.message);
                 document.getElementById('quote').textContent = 'Error loading quotes.';
                 document.getElementById('author').textContent = '';
             });
